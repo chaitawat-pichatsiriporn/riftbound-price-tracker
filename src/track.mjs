@@ -10,7 +10,7 @@ const HISTORY = path.join(DATA, "history.csv");
 const LATEST = path.join(DATA, "latest.csv");
 
 const HISTORY_COLS = ["date", "id", "finish", "name", "set", "rarity", "rifthunt_usd", "justtcg_usd", "cardmarket_eur", "cardmarket_usd", "avg_usd", "sources", "usd_thb", "usd_eur", "avg_thb"];
-const LATEST_COLS = [...HISTORY_COLS, "label", "prev_date", "prev_avg_usd", "change_pct"];
+const LATEST_COLS = [...HISTORY_COLS, "label", "prev_date", "prev_avg_usd", "change_pct", "image_url"];
 
 // ---------- small helpers ----------
 function loadDotEnv() {
@@ -263,6 +263,7 @@ async function main() {
       label: `${r.name} [${r.id}] ${r.finish === "foil" ? "Foil" : "Normal"}`,
       prev_date: p?.date ?? "",
       prev_avg_usd: p?.avg_usd ?? "",
+      image_url: byId.get(r.id)?.imgUrl ?? "",
       change_pct: p && Number(p.avg_usd) > 0 ? round(((r.avg_usd - Number(p.avg_usd)) / Number(p.avg_usd)) * 100) : "",
     };
   }).sort((a, b) => a.label.localeCompare(b.label));
