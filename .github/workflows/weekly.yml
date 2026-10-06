@@ -19,6 +19,7 @@ jobs:
       - name: Fetch prices
         env:
           JUSTTCG_API_KEY: ${{ secrets.JUSTTCG_API_KEY }}
+          TCGCM_API_KEY: ${{ secrets.TCGCM_API_KEY }}
         run: node src/track.mjs
       - name: Save new prices to the repo
         run: |

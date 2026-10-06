@@ -105,7 +105,7 @@ async function fetchJustTcg(tcgIds) {
   if (!key || process.env.SKIP_JUSTTCG) { console.log("JustTCG: no key (or SKIP_JUSTTCG set), skipping this source"); return out; }
   const MAX_REQUESTS = 90; // free plan: 100/day, 1000/month
   const ids = [...tcgIds];
-  let requests = 0, unmatched = 0;
+  let requests = 0, unmatched = 0, failures = 0;
   for (let i = 0; i < ids.length; i += 20) {
     if (requests >= MAX_REQUESTS) { console.log("JustTCG: stopping early to protect the daily limit"); break; }
     const batch = ids.slice(i, i + 20);
@@ -118,6 +118,7 @@ async function fetchJustTcg(tcgIds) {
       });
     } catch (e) {
       console.log("JustTCG batch failed:", e.message);
+      if (++failures >= 3) { console.log("JustTCG: too many failures, giving up"); break; }
       if (/HTTP (40[13]|429)/.test(e.message)) break; // bad key / over quota: no point continuing
       continue;
     } finally {
