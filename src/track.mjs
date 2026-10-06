@@ -233,8 +233,10 @@ async function main() {
       // Ignore a Cardmarket price that is zero or wildly off on a card worth more than $1.
       const tcgMean = tcg.reduce((a, b) => a + b, 0) / tcg.length;
       const cmOk = cmUsd != null && cmUsd > 0 && !(tcgMean > 1 && (cmUsd / tcgMean > 3 || cmUsd / tcgMean < 1 / 3));
+      // TCGplayer-based sources (RiftHunt, JustTCG) are averaged first, then that counts as one market
+      // against Cardmarket, so TCGplayer data is not counted twice.
       const used = cmOk ? [...tcg, cmUsd] : tcg;
-      const avg = used.reduce((a, b) => a + b, 0) / used.length;
+      const avg = cmOk ? (tcgMean + cmUsd) / 2 : tcgMean;
       rows.push({
         date: today, id: p.riftboundId, finish, name: card.name, set: card.set, rarity: card.rarity,
         rifthunt_usd: round(rh), justtcg_usd: round(jt), cardmarket_eur: round(cmEur), cardmarket_usd: round(cmUsd), avg_usd: round(avg), sources: used.length,
