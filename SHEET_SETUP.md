@@ -1,5 +1,7 @@
 # Google Sheet setup (no script needed)
 
+The live sheet: https://docs.google.com/spreadsheets/d/1jZptjSFmwsTNOpIl2Dk_fsP6DIjS1TOkI5iMmYhd0s8/edit (also has `Collection` and `Collection_Sorted` tabs; see `CLAUDE.md`).
+
 Make a new Google Sheet with four tabs named exactly: `Data_Latest`, `Data_History`, `Prices`, `Trend`.
 
 Links used below (the repo is public):
